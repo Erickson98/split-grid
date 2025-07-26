@@ -1,5 +1,5 @@
 {
-    "name": "split-grid",
+    "name": "split-grid-v2",
     "version": "1.0.11",
     "description": "The spiritual successor of Split.js, built for CSS Grid",
     "main": "dist/split-grid.js",
@@ -7,6 +7,12 @@
     "module": "dist/split-grid.mjs",
     "types": "index.d.ts",
     "type": "module",
+    "exports": {
+        ".": {
+            "import": "./dist/split-grid.mjs",
+            "require": "./dist/split-grid.js"
+        }
+    },
     "scripts": {
         "build": "rollup -c",
         "watch": "rollup -cw",
