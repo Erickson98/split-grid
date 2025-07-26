@@ -1,5 +1,6 @@
-import { parse, getSizeAtTrack, combine } from "grid-template-utils";
+import * as gridUtils from "grid-template-utils";
 
+const { getSizeAtTrack, parse } = gridUtils;
 import {
   getStyles,
   getGapValue,

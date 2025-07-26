@@ -1,83 +1,29 @@
 /*! split-grid - v1.0.11 */
 
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-    typeof define === 'function' && define.amd ? define(factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.Split = factory());
-})(this, (function () { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('grid-template-utils')) :
+    typeof define === 'function' && define.amd ? define(['grid-template-utils'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.Split = factory(global.GridTemplateUtils));
+})(this, (function (gridUtils) { 'use strict';
 
-    var gridTemplateUtils$1 = {exports: {}};
-
-    /*! grid-template-utils - v1.0.1 */
-    var gridTemplateUtils = gridTemplateUtils$1.exports;
-
-    var hasRequiredGridTemplateUtils;
-
-    function requireGridTemplateUtils () {
-    	if (hasRequiredGridTemplateUtils) return gridTemplateUtils$1.exports;
-    	hasRequiredGridTemplateUtils = 1;
-    	(function (module, exports) {
-    		(function (global, factory) {
-    		    factory(exports) ;
-    		}(gridTemplateUtils, (function (exports) {
-    		    var numeric = function (value, unit) { return Number(value.slice(0, -1 * unit.length)); };
-
-    		    var parseValue = function (value) {
-    		        if (value.endsWith('px'))
-    		            { return { value: value, type: 'px', numeric: numeric(value, 'px') } }
-    		        if (value.endsWith('fr'))
-    		            { return { value: value, type: 'fr', numeric: numeric(value, 'fr') } }
-    		        if (value.endsWith('%'))
-    		            { return { value: value, type: '%', numeric: numeric(value, '%') } }
-    		        if (value === 'auto') { return { value: value, type: 'auto' } }
-    		        return null
-    		    };
-
-    		    var parse = function (rule) { return rule.split(' ').map(parseValue); };
-
-    		    var combine = function (rule, tracks) {
-    		        var prevTracks = rule ? rule.split(' ') : [];
-
-    		        tracks.forEach(function (track, i) {
-    		            if (i > prevTracks.length - 1) {
-    		                throw new Error(
-    		                    ("Unable to set size of track index " + i + ", there are only " + (prevTracks.length) + " tracks in the grid layout.")
-    		                )
-    		            }
-
-    		            prevTracks[i] = track.value
-    		                ? track.value
-    		                : ("" + (track.numeric) + (track.type));
-    		        });
-
-    		        return prevTracks.join(' ')
-    		    };
-
-    		    var getSizeAtTrack = function (index, tracks, gap, end) {
-    		        if ( gap === void 0 ) gap = 0;
-    		        if ( end === void 0 ) end = false;
-
-    		        var newIndex = end ? index + 1 : index;
-    		        var trackSum = tracks
-    		            .slice(0, newIndex)
-    		            .reduce(function (accum, value) { return accum + value.numeric; }, 0);
-    		        var gapSum = gap ? index * gap : 0;
-
-    		        return trackSum + gapSum
-    		    };
-
-    		    exports.parse = parse;
-    		    exports.combine = combine;
-    		    exports.getSizeAtTrack = getSizeAtTrack;
-
-    		    Object.defineProperty(exports, '__esModule', { value: true });
-
-    		}))); 
-    	} (gridTemplateUtils$1, gridTemplateUtils$1.exports));
-    	return gridTemplateUtils$1.exports;
+    function _interopNamespaceDefault(e) {
+        var n = Object.create(null);
+        if (e) {
+            Object.keys(e).forEach(function (k) {
+                if (k !== 'default') {
+                    var d = Object.getOwnPropertyDescriptor(e, k);
+                    Object.defineProperty(n, k, d.get ? d : {
+                        enumerable: true,
+                        get: function () { return e[k]; }
+                    });
+                }
+            });
+        }
+        n.default = e;
+        return Object.freeze(n);
     }
 
-    var gridTemplateUtilsExports = requireGridTemplateUtils();
+    var gridUtils__namespace = /*#__PURE__*/_interopNamespaceDefault(gridUtils);
 
     var getStyles = function (rule, ownRules, matchedRules) { return ownRules.concat( matchedRules)
             .map(function (r) { return r.style[rule]; })
@@ -143,6 +89,9 @@
                 return matches
             });
     }
+
+    var getSizeAtTrack = gridUtils__namespace.getSizeAtTrack;
+    var parse = gridUtils__namespace.parse;
 
     var gridTemplatePropColumns = "grid-template-columns";
     var gridTemplatePropRows = "grid-template-rows";
@@ -236,7 +185,7 @@
     };
 
     Gutter.prototype.getSizeAtTrack = function getSizeAtTrack$1 (track, end) {
-      return gridTemplateUtilsExports.getSizeAtTrack(
+      return getSizeAtTrack(
         track,
         this.computedPixels,
         this.computedGapPixels,
@@ -284,12 +233,12 @@
 
     Gutter.prototype.setTracks = function setTracks (raw) {
       this.tracks = raw.split(" ");
-      this.trackValues = gridTemplateUtilsExports.parse(raw);
+      this.trackValues = parse(raw);
     };
 
     Gutter.prototype.setComputedTracks = function setComputedTracks (raw) {
       this.computedTracks = raw.split(" ");
-      this.computedPixels = gridTemplateUtilsExports.parse(raw);
+      this.computedPixels = parse(raw);
     };
 
     Gutter.prototype.setGap = function setGap (raw) {

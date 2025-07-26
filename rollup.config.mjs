@@ -18,6 +18,7 @@ const pkg = JSON.parse(pkgRaw);
 export default [
   {
     input: "./src/index.js",
+    external: ["grid-template-utils"],
     output: [
       {
         name: "Split",
@@ -25,6 +26,9 @@ export default [
         format: "umd",
         sourcemap: false,
         banner: `/*! ${pkg.name} - v${pkg.version} */\n`,
+        globals: {
+          "grid-template-utils": "GridTemplateUtils",
+        },
       },
       {
         file: pkg.module,
