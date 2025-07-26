@@ -1,4 +1,4 @@
-declare module 'split-grid' {
+declare module "split-grid-v2" {
   // Options passed when creating a new Split instance.
   export interface SplitOptions {
     // An array of objects, with `element` and `track` keys. `element` is the element in the grid to enable as a draggable gutter. `track` is the grid track the gutter element is positioned on. These must match.
@@ -49,13 +49,21 @@ declare module 'split-grid' {
     // Cursor to show while dragging. Default: `'row-resize'`
     rowCursor?: string;
     // Called continuously on drag. For process intensive code, add a debounce function to rate limit this callback. `gridTemplateStyle` is the computed CSS value for `grid-template-column` or `grid-template-row`, depending on `direction`.
-    onDrag?: (direction: Direction, track: number, gridTemplateStyle: string) => void;
+    onDrag?: (
+      direction: Direction,
+      track: number,
+      gridTemplateStyle: string
+    ) => void;
     // Called on drag start.
     onDragStart?: (direction: Direction, track: number) => void;
     // Called on drag end.
     onDragEnd?: (direction: Direction, track: number) => void;
     // Called to update the CSS properties of the grid element. Must eventually apply the CSS value to the CSS prop, or the grid will not change. `gridTemplateStyle` is the computed CSS value of CSS rule `gridTemplateProp`.
-    writeStyle?: (grid: HTMLElement, gridTemplateProp: GridTemplateProperty, gridTemplateStyle: string) => void;
+    writeStyle?: (
+      grid: HTMLElement,
+      gridTemplateProp: GridTemplateProperty,
+      gridTemplateStyle: string
+    ) => void;
     gridTemplateColumns?: string;
     gridTemplateRows?: string;
   }
@@ -81,9 +89,11 @@ declare module 'split-grid' {
 
   export type Sizes = { [track: number]: number };
 
-  export type Direction = 'row' | 'column';
+  export type Direction = "row" | "column";
 
-  export type GridTemplateProperty = 'grid-template-columns' | 'grid-template-rows';
+  export type GridTemplateProperty =
+    | "grid-template-columns"
+    | "grid-template-rows";
 
   export default function Split(options: SplitOptions): SplitInstance;
 }
